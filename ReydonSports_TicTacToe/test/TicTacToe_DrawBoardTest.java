@@ -35,7 +35,7 @@ public class TicTacToe_DrawBoardTest {
     @Test
     public void testMain() {
         System.out.println("Draw 3x3 Game Board");
-        String[] Cells={"C1","C2","C3","C4","C5","C6","C7","C8","C9"};
+        String[] Cells={"1","2","3","4","5","6","7","8","9"};
         TicTacToe.drawGameBoard(3,3,Cells);
 
     }
