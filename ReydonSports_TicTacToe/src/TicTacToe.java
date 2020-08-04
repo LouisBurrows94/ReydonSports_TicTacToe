@@ -17,13 +17,21 @@ public class TicTacToe {
         // TODO code application logic here
     }
     public static void drawGameBoard(int rows,int cols,String[] Cells){
+        System.out.println("TIC-TAC-TOE");
         int pos=0;
         for (int r = 0; r < rows; r++) {
-            String cellLn1="";
-            String cellLn2="";
-            String cellLn3="";
-            String horizLn="";
+            String boardHeader=" ";
+            String cellLn1=" ";
+            String cellLn2=""+r;
+            String cellLn3=" ";
+            String horizLn=" ";
             for (int c = 0;c<cols;c++){
+                if (r==0){
+                    boardHeader+=" "+c+" ";
+                    if (cols-c>1){
+                        boardHeader+=" ";
+                    }
+                }
                 cellLn1+="   ";
                 cellLn2+=" "+Cells[pos]+" ";
                 cellLn3+="   ";
@@ -37,6 +45,9 @@ public class TicTacToe {
                 pos++;
             }
             
+            if (r==0){
+                System.out.println(boardHeader);
+            }
             System.out.println(cellLn1);
             System.out.println(cellLn2);
             System.out.println(cellLn3);
