@@ -5,7 +5,7 @@
  */
 
 /**
- * Reydon Sports  Tic Tac Toe Interveiw code
+ * Reydon Sports  Tic Tac Toe Interview code
  * @author Louis_Burrows
  */
 public class TicTacToe {
@@ -15,6 +15,20 @@ public class TicTacToe {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+    }
+    public static void drawGameBoard(int rows,int cols){
+        
+        for (int r = 0; r < rows; r++) {
+            String cellLn1="";
+            String cellLn2="";
+            String cellLn3="";
+            for (int c = 0;c<cols;c++){
+                cellLn1+=c;
+            }
+            System.out.println(cellLn1);
+          }
+        
+    
     }
     
 }
