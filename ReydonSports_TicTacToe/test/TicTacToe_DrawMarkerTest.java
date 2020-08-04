@@ -31,7 +31,7 @@ public class TicTacToe_DrawMarkerTest {
      */
     @Test
     public void testMain() {
-        System.out.println("main");
+        System.out.println("instanctaite main to draw a blank board");
         String[] args = {"3","3"};
         TicTacToe.main(args);
 
@@ -51,7 +51,7 @@ public class TicTacToe_DrawMarkerTest {
      */
     @Test
     public void testCheckMarkerValid() {
-        System.out.println("checkMarkerValid");
+        System.out.println("checkMarkerValid() check for acceptance of correct format");
         String consoleInput = "2,2";
         String expResult = "";
         String result = TicTacToe.checkMarkerValid(consoleInput);
@@ -64,28 +64,28 @@ public class TicTacToe_DrawMarkerTest {
      */
     @Test
     public void testIsInteger() {
-        System.out.println("isInteger");
+        System.out.println("isPostiveInteger() check integer value is accepted");
         String s = "1";
         int radix = 10;
         boolean expResult = true;
         boolean result = TicTacToe.isPositiveInteger(s, radix);
         assertEquals(expResult, result);
         
-        System.out.println("check for negative ints");
+        System.out.println("isPositiveIntegr() check for negative int is rejected");
         s = "-1";
         radix = 10;
         expResult = false;
         result = TicTacToe.isPositiveInteger(s, radix);
         assertEquals(expResult, result);
         
-        System.out.println("check for non int");
+        System.out.println("isPositiveInteger() check non int is rejected");
         s = "a";
         radix = 10;
         expResult = false;
         result = TicTacToe.isPositiveInteger(s, radix);
         assertEquals(expResult, result);
         
-        System.out.println("check for mix of ints and non ints");
+        System.out.println("isPositiveInteger() check mix of ints and non ints is rejected");
         s = "a1";
         radix = 10;
         expResult = false;
@@ -100,12 +100,22 @@ public class TicTacToe_DrawMarkerTest {
      */
     @Test
     public void testAddMarkerToBoard() {
-        System.out.println("addMarkerToBoard");
+        System.out.println("addMarkerToBoard(), add X to non 0 cell index");
         int x = 0;
         int y = 0;
         String[] Cells = {" "," "," "," "," "," "," "," "," "};
+        String Marker="X";
         String[] expResult = {"X"," "," "," "," "," "," "," "," "};
-        String[] result = TicTacToe.addMarkerToBoard(x, y, Cells);
+        String[] result = TicTacToe.addMarkerToBoard(x, y, Cells,Marker);
+        assertArrayEquals(expResult, result);
+        
+        System.out.println("addMarkerToBoard(), add O to non 0 cell index");
+        x = 1;
+        y = 0;
+        Cells = new String[]{"X"," "," "," "," "," "," "," "," "};
+        Marker="O";
+        expResult = new String[]{"X","O"," "," "," "," "," "," "," "};
+        result = TicTacToe.addMarkerToBoard(x, y, Cells,Marker);
         assertArrayEquals(expResult, result);
 
     }

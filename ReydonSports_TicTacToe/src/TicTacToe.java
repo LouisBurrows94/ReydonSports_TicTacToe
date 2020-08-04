@@ -51,8 +51,10 @@ public class TicTacToe {
         String[] inputArray=consoleInput.split(",");
         if(inputArray.length==0) return "No Coordinates entered";
         if(inputArray.length>2)return "Incorrect Coordinate Format expected 'x,y'";
-        if(!isPositiveInteger(inputArray[0],cols))return "x coord is not an integer";
-        if(!isPositiveInteger(inputArray[0],rows))return "y coord is not an integer";
+        if(!isPositiveInteger(inputArray[0],cols))return "x coord is not an integer greater than 0";
+        if(Integer.parseInt(inputArray[0])>=cols)return "x coord is to high must be less than "+cols;
+        if(!isPositiveInteger(inputArray[1],rows))return "y coord is not an integer greater than 0";
+        if(Integer.parseInt(inputArray[1])>=rows)return "y coord is to high must be less than "+rows;
         return ""; //no errors
     }
     public static boolean isPositiveInteger(String s, int radix) {
@@ -68,8 +70,12 @@ public class TicTacToe {
     }
     return true;
 }
-    public static String[] addMarkerToBoard(int x ,int y, String[] Cells){
-        
+    public static String[] addMarkerToBoard(int x ,int y, String[] Cells,String Marker){
+        /**
+         * Take x and y and turn it into some position in the cells array 
+         * cellPos = x+y*rows)
+         */
+        Cells[x+(y*rows)]=Marker;
         return Cells;
     }
     public static void drawGameBoard(int rows,int cols,String[] Cells){
