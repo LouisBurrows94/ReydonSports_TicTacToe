@@ -50,12 +50,90 @@ public class TicTacToe_DrawMarkerTest {
      * Test of checkMarkerValid method, of class TicTacToe.
      */
     @Test
-    public void testCheckMarkerValid() {
-        System.out.println("checkMarkerValid() check for acceptance of correct format");
+    public void testcheckCoordValid() {
+        String[] args = {"3","3"};
+        TicTacToe.main(args);
+        
+        System.out.println("checkCoordValid() check for acceptance of correct format");
         String consoleInput = "2,2";
         String expResult = "";
-        String result = TicTacToe.checkMarkerValid(consoleInput);
+        String result = TicTacToe.checkCoordValid(consoleInput);
         assertEquals(expResult, result);
+        
+        System.out.println("checkCoordValid() check no coordinates are rejected ");
+        consoleInput = "";
+        expResult = "Incorrect Coordinate Format expected 'x,y'";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        System.out.println("checkCoordValid() check only 1 coordinates is rejected ");
+        consoleInput = "2";
+        expResult = "Incorrect Coordinate Format expected 'x,y'";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        System.out.println("checkCoordValid() check more than 2 coordinates are rejected ");
+        consoleInput = "2,2,2";
+        expResult = "Incorrect Coordinate Format expected 'x,y'";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        System.out.println("checkCoordValid() check x = non int is rejected ");
+        consoleInput = "a,2";
+        expResult = "x coord is not an integer greater than 0";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        System.out.println("checkCoordValid() check y = non int is rejected ");
+        consoleInput = "2,a";
+        expResult = "y coord is not an integer greater than 0";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        System.out.println("checkCoordValid() check x and y = non int is rejected ");
+        consoleInput = "a,a";
+        expResult = "x coord is not an integer greater than 0";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        
+        System.out.println("checkCoordValid() check x= -1 is rejected ");
+        consoleInput = "-1,2";
+        expResult = "x coord is not an integer greater than 0";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        System.out.println("checkCoordValid() check y= -1 is rejected ");
+        consoleInput = "2,-1";
+        expResult = "y coord is not an integer greater than 0";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+
+        System.out.println("checkCoordValid() check y and x= -1 is rejected ");
+        consoleInput = "-1,-1";
+        expResult = "x coord is not an integer greater than 0";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        
+        System.out.println("checkCoordValid() check x>rows is rejected ");
+        consoleInput = "3,2";
+        expResult = "x coord is to high must be less than 3";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+        
+        System.out.println("checkCoordValid() check y>rows is rejected ");
+        consoleInput = "2,3";
+        expResult = "y coord is to high must be less than 3";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+
+        System.out.println("checkCoordValid() check y and x> rows is rejected ");
+        consoleInput = "3,3";
+        expResult = "x coord is to high must be less than 3";
+        result = TicTacToe.checkCoordValid(consoleInput);
+        assertEquals(expResult, result);
+
 
     }
 
@@ -63,7 +141,7 @@ public class TicTacToe_DrawMarkerTest {
      * Test of isInteger method, of class TicTacToe.
      */
     @Test
-    public void testIsInteger() {
+    public void testIsPositiveInteger() {
         System.out.println("isPostiveInteger() check integer value is accepted");
         String s = "1";
         int radix = 10;
