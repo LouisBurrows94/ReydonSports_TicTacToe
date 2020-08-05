@@ -41,6 +41,7 @@ public class TicTacToe {
      */
     public static void main(String[] args) {
         //Parse arguments
+        //define size of baord
         if (args.length<1){
             System.out.println("insuffiient parameters provided");
             return;
@@ -61,6 +62,7 @@ public class TicTacToe {
                 return;
             }
         }
+        //define number of players
         if (args.length>=3){
             if(isPositiveInteger(args[2],10)){
                 humans=Integer.parseInt(args[2]);
@@ -69,9 +71,9 @@ public class TicTacToe {
                     return;
                 }else if (humans ==1){
                     if (args.length>=4){
-                        if("true".equals(args[4])){
+                        if("true".equals(args[3])){
                             humanPlayer="PLAYER1";
-                        }else if("false".equals(args[4])){
+                        }else if("false".equals(args[3])){
                             humanPlayer="PLAYER2";                        
                         }else{
                             System.out.println("enter 'true' to goFirst or 'false to go second ");
@@ -98,12 +100,15 @@ public class TicTacToe {
         currentPlayer="PLAYER1";
         currentMarker="X";
         while (gameRunning==true){
-            
+            //get input
             int[] Coords = getCoordFromPlayer();
+            //update game baord
             addMarkerToBoard(Coords[0],Coords[1],currentMarker);
-            
+            //draw o console
             drawGameBoard();
+            //check fail game end state
             gameRunning=checkVictoryConditions(Coords);
+            //switch players
             if ("PLAYER1".equals(currentPlayer)){
                 currentPlayer="PLAYER2";
                 currentMarker="O";
@@ -113,12 +118,17 @@ public class TicTacToe {
             }
             
         }
+        //record result
         addToLeaderBoard( Winner);
             
         
         
     }
     public static int[] getCoordFromPlayer(){
+        /**
+         * The number of humans determines how the input for each move is aquired
+         */
+        
         switch (humans){
             case 0:
                 return getAIPlayerInput();
@@ -137,7 +147,8 @@ public class TicTacToe {
     }
     public static int[] getAIPlayerInput(){
         /**
-         * A simple ai that picks a random avaialble cell
+         * A simple ai opponent that picks a random avaialble cell
+         * the ai will only make moves that are available and valid
          */
         System.out.println(currentPlayer +" ("+currentMarker+")");
         System.out.println("Enter coordinates (X,Y):");
@@ -159,6 +170,9 @@ public class TicTacToe {
         return new int[]{0,0};
     }
     public static int[] getHumanPlayerInput(){
+        /**
+         * Gets user input from human player and checks that the input is valid
+         */
         boolean validInput=false;
         String input="";
         //BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -191,7 +205,7 @@ public class TicTacToe {
         return Coords;
     }
     public static boolean checkAMove(int x , int y){
-        //check if the move has already been made
+        //check if the move has already been made on the game
             if (!" ".equals(Cells[x+(y*rows)]))return false;
         return true;
     }
@@ -201,7 +215,6 @@ public class TicTacToe {
          * x and y are integers
          * 0<x < columns
          * 0<y <rows
-         * x and y 
          */
         String[] inputArray=consoleInput.split(",");
         //check coordinate format
@@ -214,7 +227,9 @@ public class TicTacToe {
         return ""; //no errors
     }
     public static boolean isPositiveInteger(String s, int radix) {
-    //For string check if it is a valid integer value and greater than 0 
+    /**
+     * //For string check if it is a valid integer value and greater than 0 
+     */
     if(s.isEmpty()) return false;
     if(s.charAt(0) == '-')return false;
     for(int i = 0; i < s.length(); i++) {
@@ -240,9 +255,15 @@ public class TicTacToe {
          * return false if draw or game won
          * 
          * victory positions can be checked from the position of the last place marker
-         * 1 check for any directly adjacent same marker
-         *  in the same direction check for a second marker
-         *  or on teh opposite side of the last placed marker
+         * check for lines in vertical , horizontal ,left to right diagonal , right to left diagonal
+         * thier are 5 positions in each direction that a line could be in if the line is length 3  iem -,-,X,-,- 
+         * for any directions thier are 3 cases to check ,
+         * 1 if a line start 2 cells away from the placed piece         ie, sX,-,pX
+         * 2 if a line starts 1 square away from the placed piece       ie, sX,pX,-
+         * 3 if a line starts on the placed piece                       ie, pX,-,-
+         * 
+         * The second and  third case cover the remaining no start positions in each possible direction 
+         *
          */
         int x = Coords[0];
         int y = Coords[1];
@@ -251,17 +272,17 @@ public class TicTacToe {
             if(row >rows) break;
             if(row<0) continue;
             if(Cells[x+(row*rows)].equals(currentMarker)){
-                if(row == y-2){
+                if(row == y-2){                                 //line start 2 cells away from the placed piece
                     if(Cells[x+((y-1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if((row==y-1)&&(y+1<rows)){
+                }else if((row==y-1)&&(y+1<rows)){               //if a line starts 1 square away from the placed piece 
                     if(Cells[x+((y+1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if(((row==y)&&(y+1<rows))&&(y+2<rows)){
+                }else if(((row==y)&&(y+1<rows))&&(y+2<rows)){   //if a line starts on the placed piece 
                     if((Cells[x+((y+1)*rows)].equals(currentMarker))&&(Cells[x+((y+2)*rows)].equals(currentMarker))){
                         printWinner();
                         return false;
@@ -275,17 +296,17 @@ public class TicTacToe {
             if(col >cols) break;
             if(col<0) continue;
             if(Cells[col+(y*rows)].equals(currentMarker)){
-                if(col == x-2){
+                if(col == x-2){                                 //line start 2 cells away from the placed piece
                     if(Cells[(x-1)+(y*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if((col==x-1)&&(x+1<cols)){
+                }else if((col==x-1)&&(x+1<cols)){               //if a line starts 1 square away from the placed piece 
                     if(Cells[(x+1)+(y*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if(((col==x)&&(x+1<cols))&&(x+2<cols)){
+                }else if(((col==x)&&(x+1<cols))&&(x+2<cols)){   //if a line starts on the placed piece 
                     if((Cells[(x+1)+(y*rows)].equals(currentMarker))&&(Cells[(x+2)+(y*rows)].equals(currentMarker))){
                         printWinner();
                         return false;
@@ -299,17 +320,17 @@ public class TicTacToe {
             int dY=y-i;
             if((dX<0)||(dY<0)) continue;
             if(Cells[dX+(dY*rows)].equals(currentMarker)){
-                if(i == 2){
+                if(i == 2){                                     //line start 2 cells away from the placed piece
                     if(Cells[(x-1)+((y-1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if(((i==1)&&(x+1<cols))&&(y+1<rows)){
+                }else if(((i==1)&&(x+1<cols))&&(y+1<rows)){     //if a line starts 1 square away from the placed piece 
                     if(Cells[(x+1)+((y+1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if(((i==0)&&(x+2<cols))&&(y+2<rows)){
+                }else if(((i==0)&&(x+2<cols))&&(y+2<rows)){     //if a line starts on the placed piece 
                     if((Cells[(x+1)+((y+1)*rows)].equals(currentMarker))&&(Cells[(x+2)+((y+2)*rows)].equals(currentMarker))){
                         printWinner();
                         return false;
@@ -324,17 +345,17 @@ public class TicTacToe {
             int dY=y-i;
             if((dX>cols)||(dY<0)) continue;
             if(Cells[dX+(dY*rows)].equals(currentMarker)){
-                if(i == 2){
+                if(i == 2){                                         //line start 2 cells away from the placed piece
                     if(Cells[(x+1)+((y-1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if(((i==1)&&(x-1>=0))&&(y + 1 < rows)){
+                }else if(((i==1)&&(x-1>=0))&&(y + 1 < rows)){       //if a line starts 1 square away from the placed piece 
                     if(Cells[(x-1)+((y+1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if(((i==0)&&(x-2>=0))&&(y+2<rows)){
+                }else if(((i==0)&&(x-2>=0))&&(y+2<rows)){           //if a line starts on the placed piece 
                     if((Cells[(x-1)+((y+1)*rows)].equals(currentMarker))&&(Cells[(x-2)+((y+2)*rows)].equals(currentMarker))){
                         printWinner();
                         return false;
@@ -346,7 +367,7 @@ public class TicTacToe {
         // check for any remaining spaces
         for(String Marker : Cells){
             if(" ".equals(Marker)){
-                //thier are stioll moves left to make
+                //thier are still moves left to make
                 return true;
             }
         }
@@ -369,6 +390,9 @@ public class TicTacToe {
         System.out.println("***********************");
     }        
     public static void drawGameBoard(){
+        /**
+         * draw the game board with any number of rows and columns based on the parameters passed to main 
+         */
         System.out.println("TIC-TAC-TOE");
         int pos=0;
         for (int r = 0; r < rows; r++) {
@@ -411,6 +435,13 @@ public class TicTacToe {
     
     }
     public static void addToLeaderBoard(String leader){
+        /**
+         * Output Results to JSON File for potential further anlysis
+         * uses json simple to build a josn object from the game resulst
+         * uses json simlpe to load the json array from file
+         * adds json object to json array 
+         * rewrites the json file with the updated json array using gson to format the output so that it is human readable 
+         */
         Timestamp TimeStamp = new Timestamp(System.currentTimeMillis());
         String leaderJson="{\"winner\":\""+leader+"\",\"TimeStamp\" : \""+TimeStamp+"\"}";
         
