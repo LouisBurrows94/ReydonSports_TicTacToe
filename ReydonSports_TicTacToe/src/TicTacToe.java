@@ -268,22 +268,25 @@ public class TicTacToe {
         int x = Coords[0];
         int y = Coords[1];
         // For Vertical check 
-        for(int row =y-2;row<y;row++){
+        for(int row =y-2;row<=y;row++){
             if(row >rows) break;
             if(row<0) continue;
             if(Cells[x+(row*rows)].equals(currentMarker)){
                 if(row == y-2){                                 //line start 2 cells away from the placed piece
                     if(Cells[x+((y-1)*rows)].equals(currentMarker)){
+                        //System.out.println("vertical win 1");
                         printWinner();
                         return false;
                     }
                 }else if((row==y-1)&&(y+1<rows)){               //if a line starts 1 square away from the placed piece 
                     if(Cells[x+((y+1)*rows)].equals(currentMarker)){
+                        //System.out.println("vertical win 2");
                         printWinner();
                         return false;
                     }
                 }else if(((row==y)&&(y+1<rows))&&(y+2<rows)){   //if a line starts on the placed piece 
                     if((Cells[x+((y+1)*rows)].equals(currentMarker))&&(Cells[x+((y+2)*rows)].equals(currentMarker))){
+                        //System.out.println("vertical win 3");
                         printWinner();
                         return false;
                     }
@@ -291,23 +294,26 @@ public class TicTacToe {
             }
         }
 
-        // For Vertical check 
-        for(int col =x-2;col<x;col++){
+        // For Horizontal check 
+        for(int col =x-2;col<=x;col++){
             if(col >cols) break;
             if(col<0) continue;
             if(Cells[col+(y*rows)].equals(currentMarker)){
                 if(col == x-2){                                 //line start 2 cells away from the placed piece
                     if(Cells[(x-1)+(y*rows)].equals(currentMarker)){
+                        //System.out.println("Horizontal win 1");
                         printWinner();
                         return false;
                     }
                 }else if((col==x-1)&&(x+1<cols)){               //if a line starts 1 square away from the placed piece 
                     if(Cells[(x+1)+(y*rows)].equals(currentMarker)){
+                        //System.out.println("Horizontal win 2");
                         printWinner();
                         return false;
                     }
                 }else if(((col==x)&&(x+1<cols))&&(x+2<cols)){   //if a line starts on the placed piece 
                     if((Cells[(x+1)+(y*rows)].equals(currentMarker))&&(Cells[(x+2)+(y*rows)].equals(currentMarker))){
+                        //System.out.println("Horizontal win 3");
                         printWinner();
                         return false;
                     }
@@ -322,16 +328,19 @@ public class TicTacToe {
             if(Cells[dX+(dY*rows)].equals(currentMarker)){
                 if(i == 2){                                     //line start 2 cells away from the placed piece
                     if(Cells[(x-1)+((y-1)*rows)].equals(currentMarker)){
+                        //System.out.println("Diag L-R win 1");
                         printWinner();
                         return false;
                     }
                 }else if(((i==1)&&(x+1<cols))&&(y+1<rows)){     //if a line starts 1 square away from the placed piece 
                     if(Cells[(x+1)+((y+1)*rows)].equals(currentMarker)){
+                        //System.out.println("Diag L-R win 2");
                         printWinner();
                         return false;
                     }
                 }else if(((i==0)&&(x+2<cols))&&(y+2<rows)){     //if a line starts on the placed piece 
                     if((Cells[(x+1)+((y+1)*rows)].equals(currentMarker))&&(Cells[(x+2)+((y+2)*rows)].equals(currentMarker))){
+                        //System.out.println("Diag L-R win 3");
                         printWinner();
                         return false;
                     }
@@ -343,20 +352,23 @@ public class TicTacToe {
         for( int i =2 ; i>-1;i--){
             int dX=x+i;
             int dY=y-i;
-            if((dX>cols)||(dY<0)) continue;
+            if((dX>=cols)||(dY<0)) continue;
             if(Cells[dX+(dY*rows)].equals(currentMarker)){
                 if(i == 2){                                         //line start 2 cells away from the placed piece
                     if(Cells[(x+1)+((y-1)*rows)].equals(currentMarker)){
+                        //System.out.println("Diag R-L win 1");
                         printWinner();
                         return false;
                     }
                 }else if(((i==1)&&(x-1>=0))&&(y + 1 < rows)){       //if a line starts 1 square away from the placed piece 
                     if(Cells[(x-1)+((y+1)*rows)].equals(currentMarker)){
+                        //System.out.println("Diag R-L win 2");
                         printWinner();
                         return false;
                     }
                 }else if(((i==0)&&(x-2>=0))&&(y+2<rows)){           //if a line starts on the placed piece 
                     if((Cells[(x-1)+((y+1)*rows)].equals(currentMarker))&&(Cells[(x-2)+((y+2)*rows)].equals(currentMarker))){
+                        //System.out.println("Diag R-L win 3");
                         printWinner();
                         return false;
                     }
