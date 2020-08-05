@@ -35,11 +35,11 @@ public class TicTacToe_DrawBoardTest {
     @Test
     public void testMain() {
         System.out.println("Draw 3x3 Game Board");
-        String[] Cells3by3={"1","2","3","4","5","6","7","8","9"};
-        TicTacToe.drawGameBoard(3,3,Cells3by3);
+        String[] args = {"3","3"};
+        TicTacToe.main(args);
         System.out.println("Draw 4x4 Game Board");
-        String[] Cells4by4={"1","2","3","4","5","6","7","8","9","0","1","2","3","4","5","6"};
-        TicTacToe.drawGameBoard(4,4,Cells4by4);
+        args = new String[]{"4","4"};
+        TicTacToe.main(args);
 
     }
     

@@ -41,9 +41,25 @@ public class TicTacToe_DrawMarkerTest {
      * Test of makeAMove method, of class TicTacToe.
      */
     @Test
-    public void testMakeAMove() {
-        System.out.println("makeAMove");
-        TicTacToe.makeAMove();
+    public void testcheckAMove() {
+        
+        System.out.println("checkAMove() accept a move to an empty cell (0,0)");
+        TicTacToe.drawGameBoard();
+        int x =0;
+        int y = 0;
+        boolean expResult = true;
+        boolean result = TicTacToe.checkAMove(x,y);
+        assertEquals(expResult, result);
+        
+        x =0;
+        y = 0;
+        String Marker="X";
+        TicTacToe.addMarkerToBoard(x, y,Marker);
+        System.out.println("checkAMove() reject a move to an full cell (0,0)");
+        TicTacToe.drawGameBoard();
+        expResult = false;
+        result = TicTacToe.checkAMove(x,y);
+        assertEquals(expResult, result);
     }
 
     /**
@@ -178,23 +194,26 @@ public class TicTacToe_DrawMarkerTest {
      */
     @Test
     public void testAddMarkerToBoard() {
+        String[] args = {"3","3"};
+        TicTacToe.main(args);
+        
         System.out.println("addMarkerToBoard(), add X to non 0 cell index");
         int x = 0;
         int y = 0;
-        String[] Cells = {" "," "," "," "," "," "," "," "," "};
         String Marker="X";
-        String[] expResult = {"X"," "," "," "," "," "," "," "," "};
-        String[] result = TicTacToe.addMarkerToBoard(x, y, Cells,Marker);
+        String[] expResult = new String[]{"X"," "," "," "," "," "," "," "," "};
+        String[] result = TicTacToe.addMarkerToBoard(x, y, Marker);
+        TicTacToe.drawGameBoard();
         assertArrayEquals(expResult, result);
         
         System.out.println("addMarkerToBoard(), add O to non 0 cell index");
         x = 1;
         y = 0;
-        Cells = new String[]{"X"," "," "," "," "," "," "," "," "};
         Marker="O";
         expResult = new String[]{"X","O"," "," "," "," "," "," "," "};
-        result = TicTacToe.addMarkerToBoard(x, y, Cells,Marker);
+        result = TicTacToe.addMarkerToBoard(x, y, Marker);
         assertArrayEquals(expResult, result);
+        TicTacToe.drawGameBoard();
 
     }
 
