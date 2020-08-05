@@ -242,7 +242,7 @@ public class TicTacToe {
                         printWinner();
                         return false;
                     }
-                }else if(((i==0)&&(rows-x>=2))&&(rows-y>=2)){
+                }else if(((i==0)&&(x+2<cols))&&(rows-y>=2)){
                     if((Cells[(x+1)+((y+1)*rows)].equals(currentMarker))&&(Cells[(x+2)+((y+2)*rows)].equals(currentMarker))){
                         printWinner();
                         return false;
@@ -252,6 +252,29 @@ public class TicTacToe {
         }
         
         // For right to left diagonal
+        for( int i =2 ; i>-1;i--){
+            int dX=x+i;
+            int dY=y-i;
+            if((dX>cols)||(dY<0)) continue;
+            if(Cells[dX+(dY*rows)].equals(currentMarker)){
+                if(i == 2){
+                    if(Cells[(x+1)+((y-1)*rows)].equals(currentMarker)){
+                        printWinner();
+                        return false;
+                    }
+                }else if((i==1)&&(y+1<rows)){
+                    if(Cells[(x-1)+((y+1)*rows)].equals(currentMarker)){
+                        printWinner();
+                        return false;
+                    }
+                }else if(((i==0)&&(x-2>=0))&&(rows-y>=2)){
+                    if((Cells[(x-1)+((y+1)*rows)].equals(currentMarker))&&(Cells[(x-2)+((y+2)*rows)].equals(currentMarker))){
+                        printWinner();
+                        return false;
+                    }
+                }
+            }
+        }
         
         // check for any remaining spaces
         for(String Marker : Cells){
