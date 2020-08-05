@@ -25,6 +25,7 @@ public class TicTacToe {
     private static boolean gameRunning=false;
     private static String currentPlayer="";
     private static String currentMarker="";
+    private static String humanPlayer="";
     /**
      * @param args the command line arguments
      */
@@ -55,6 +56,18 @@ public class TicTacToe {
                 humans=Integer.parseInt(args[2]);
                 if(humans>2){
                     System.out.println("Too many human oppponents please enter value between 0 - 2");
+                }else if (humans ==1){
+                    if (args.length>=4){
+                        if("true".equals(args[4])){
+                            humanPlayer="PLAYER1";
+                        }else if("false".equals(args[4])){
+                            humanPlayer="PLAYER2";                        
+                        }else{
+                            System.out.println("enter 'true' to goFirst or 'false to go second ");
+                        }
+                    }else{
+                        humanPlayer="PLAYER1";
+                    }
                 }
             }else{
                 System.out.println("value for number of humans is not an integer please enter value between 0 - 2");
@@ -73,7 +86,7 @@ public class TicTacToe {
         currentMarker="X";
         while (gameRunning==true){
             
-            int[] Coords = getPlayerInput();
+            int[] Coords = getCoordFromPlayer();
             addMarkerToBoard(Coords[0],Coords[1],currentMarker);
             
             drawGameBoard();
@@ -91,7 +104,38 @@ public class TicTacToe {
         
         
     }
-    public static int[] getPlayerInput(){
+    public static int[] getCoordFromPlayer(){
+        switch (humans){
+            case 0:
+                return getAIPlayerInput();
+            case 1:
+                if(currentPlayer.equals(humanPlayer)){
+                    return getHumanPlayerInput();
+                }else{
+                    return getAIPlayerInput();
+                }
+            case 2:
+                return getHumanPlayerInput();
+            default:
+                System.out.println("more than 2 human players");            
+        }
+        return new int[]{0,0};
+    }
+    public static int[] getAIPlayerInput(){
+        /**
+         * A simple ai that picks the next avaialble cell from the list
+         */
+         for(int i =0 ;i<Cells.length-1 ;i++){
+             if(" ".equals(Cells[i])){
+                 int x = i%cols;
+                 int y = i / rows;
+                 return new int[]{x,y};
+             }
+         }     
+        
+        return new int[]{0,0};
+    }
+    public static int[] getHumanPlayerInput(){
         boolean validInput=false;
         String input="";
         //BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -237,7 +281,7 @@ public class TicTacToe {
                         printWinner();
                         return false;
                     }
-                }else if((i==1)&&(y+1<rows)){
+                }else if(((i==1)&&(x+1<cols))&&(x+1<rows)){
                     if(Cells[(x+1)+((y+1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
@@ -262,7 +306,7 @@ public class TicTacToe {
                         printWinner();
                         return false;
                     }
-                }else if((i==1)&&(y+1<rows)){
+                }else if(((i==1)&&(x-1>=0))&&(y + 1 < rows)){
                     if(Cells[(x-1)+((y+1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
