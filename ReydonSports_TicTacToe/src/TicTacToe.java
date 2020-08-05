@@ -30,6 +30,10 @@ public class TicTacToe {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        if (args.length<1){
+            System.out.println("insuffiient parameters provided");
+            return;
+        }
         if (args.length>=1){
             if(isPositiveInteger(args[0],10)){
                 cols=Integer.parseInt(args[0]);
@@ -73,6 +77,7 @@ public class TicTacToe {
             addMarkerToBoard(Coords[0],Coords[1],currentMarker);
             
             drawGameBoard();
+            gameRunning=checkVictoryConditions(Coords);
             if ("PLAYER1".equals(currentPlayer)){
                 currentPlayer="PLAYER2";
                 currentMarker="O";
@@ -81,7 +86,6 @@ public class TicTacToe {
                 currentMarker="X";
             }
             
-            gameRunning=false;
         }
             
         
@@ -102,9 +106,10 @@ public class TicTacToe {
             String coordFormatCheck=checkCoordValid(input);
             if("".equals(coordFormatCheck)){
                 String[] strCoords=input.split(",");
-                int y = Integer.parseInt(strCoords[0]);
-                int x = Integer.parseInt(strCoords[1]);
+                int x = Integer.parseInt(strCoords[0]);
+                int y = Integer.parseInt(strCoords[1]);
                 if(checkAMove(x,y)){
+                    Coords=new int[]{x,y};
                     validInput=true;
                 }else{
                     System.out.println(x+","+y+" is not a valid move");
@@ -162,6 +167,92 @@ public class TicTacToe {
         Cells[x+(y*rows)]=Marker;
         return Cells;
     }
+    public static boolean checkVictoryConditions(int[] Coords){
+        /**
+         * return true if game not won yet
+         * return false if draw or game won
+         * 
+         * victory positions can be checked from the position of the last place marker
+         * 1 check for any directly adjacent same marker
+         *  in the same direction check for a second marker
+         *  or on teh opposite side of the last placed marker
+         */
+        int x = Coords[0];
+        int y = Coords[1];
+        // For Vertical check 
+        for(int row =y-2;row<y;row++){
+            if(row >cols) break;
+            if(row<0) continue;
+            if(Cells[x+(row*rows)].equals(currentMarker)){
+                if(row == y-2){
+                    if(Cells[x+((y-1)*rows)].equals(currentMarker)){
+                        printWinner();
+                        return false;
+                    }
+                }else if((row==y-1)&&(y+1<rows)){
+                    if(Cells[x+((y+1)*rows)].equals(currentMarker)){
+                        printWinner();
+                        return false;
+                    }
+                }else if(((row==y)&&(y+1<rows))&&(y+2<rows)){
+                    if((Cells[x+((y+1)*rows)].equals(currentMarker))&&(Cells[x+((y+2)*rows)].equals(currentMarker))){
+                        printWinner();
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // For Vertical check 
+        for(int col =x-2;col<x;col++){
+            if(col >cols) break;
+            if(col<0) continue;
+            if(Cells[col+(y*rows)].equals(currentMarker)){
+                if(col == x-2){
+                    if(Cells[(x-1)+(y*rows)].equals(currentMarker)){
+                        printWinner();
+                        return false;
+                    }
+                }else if((col==x-1)&&(y+1<rows)){
+                    if(Cells[x+((y+1)*rows)].equals(currentMarker)){
+                        printWinner();
+                        return false;
+                    }
+                }else if(((col==x)&&(x+1<rows))&&(x+2<rows)){
+                    if((Cells[(x+1)+(y*rows)].equals(currentMarker))&&(Cells[(x+2)+(y*rows)].equals(currentMarker))){
+                        printWinner();
+                        return false;
+                    }
+                }
+            }
+        }
+        // For left to right diagonal
+        
+        // For right to left diagonal
+        
+        // check for any remaining spaces
+        for(String Marker : Cells){
+            if(" ".equals(Marker)){
+                //thier are stioll moves left to make
+                return true;
+            }
+        }
+        // the board must be full , a draw has been reached
+        printDraw();
+        return false;
+    }
+    public static void printWinner(){
+        System.out.println("*******WINNER**********");
+        System.out.println("Congratulations "+currentPlayer);
+        System.out.println("***********************");
+        
+    }
+    public static void printDraw(){
+        System.out.println("*********Draw**********");
+        System.out.println("The only winning move is");
+        System.out.println("not to play");
+        System.out.println("***********************");
+    }        
     public static void drawGameBoard(){
         System.out.println("TIC-TAC-TOE");
         int pos=0;

@@ -6,6 +6,7 @@
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Scanner;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,11 +46,13 @@ public class TicTacToe_2HUMAN_Test {
      */
     @Test
     public void testMain() {
-        final String testString = "1,1";
-        provideInput(testString);
+        //final String testString = "1,1\n1,2";
+        //provideInput(testString); // only send teh first input
         System.out.println("main");
         String[] args = {"3","3","2"};
-        TicTacToe.main(args);
+        //TicTacToe.main(args);
+        //final String testString2 = "1,2";
+        //provideInput(testString2);
     }
 
     /**
@@ -128,6 +131,24 @@ public class TicTacToe_2HUMAN_Test {
         //System.out.println("drawGameBoard");
         TicTacToe.drawGameBoard();
 
+    }
+
+    /**
+     * Test of checkVictoryConditions method, of class TicTacToe.
+     */
+    @Test
+    public void testCheckVictoryConditions() {
+        final String testString = "1,1\n1,2";
+        provideInput(testString);
+        String[] args = {"3","3","2"};
+        TicTacToe.main(args);
+        
+        System.out.println("checkVictoryConditions");
+        int[] Coords = {1,1};
+        boolean expResult = false;
+        boolean result = TicTacToe.checkVictoryConditions(Coords);
+        assertEquals(expResult, result);
+  
     }
     
 }
