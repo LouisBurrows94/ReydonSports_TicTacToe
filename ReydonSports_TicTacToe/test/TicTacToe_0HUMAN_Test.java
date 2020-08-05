@@ -31,9 +31,16 @@ public class TicTacToe_0HUMAN_Test {
      */
     @Test
     public void testMain() {
-        System.out.println("main");
-        String[] args = {"3","3","0"};
-        TicTacToe.main(args);
+        for (int i =0;i<10 ;i++){
+            System.out.println("main Test "+i);
+            String[] args = {"3","3","0"};
+            TicTacToe.main(args);
+        }
+        for (int i =0;i<10 ;i++){
+            System.out.println("main Test "+i);
+            String[] args = {"4","4","0"};
+            TicTacToe.main(args);
+        }
     }
 
     /**

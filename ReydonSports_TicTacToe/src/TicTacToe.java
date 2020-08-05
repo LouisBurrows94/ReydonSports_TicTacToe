@@ -1,16 +1,25 @@
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * Reydon Sports  Tic Tac Toe Interview code
@@ -26,11 +35,12 @@ public class TicTacToe {
     private static String currentPlayer="";
     private static String currentMarker="";
     private static String humanPlayer="";
+    private static String Winner="";
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        //Parse arguments
         if (args.length<1){
             System.out.println("insuffiient parameters provided");
             return;
@@ -56,6 +66,7 @@ public class TicTacToe {
                 humans=Integer.parseInt(args[2]);
                 if(humans>2){
                     System.out.println("Too many human oppponents please enter value between 0 - 2");
+                    return;
                 }else if (humans ==1){
                     if (args.length>=4){
                         if("true".equals(args[4])){
@@ -64,7 +75,9 @@ public class TicTacToe {
                             humanPlayer="PLAYER2";                        
                         }else{
                             System.out.println("enter 'true' to goFirst or 'false to go second ");
+                            return;
                         }
+                        System.out.println("human player is "+humanPlayer);
                     }else{
                         humanPlayer="PLAYER1";
                     }
@@ -80,7 +93,7 @@ public class TicTacToe {
             Cells[i]=" ";
         } 
         drawGameBoard();
-        
+        //game runtime routine
         gameRunning=true;
         currentPlayer="PLAYER1";
         currentMarker="X";
@@ -100,6 +113,7 @@ public class TicTacToe {
             }
             
         }
+        addToLeaderBoard( Winner);
             
         
         
@@ -123,16 +137,25 @@ public class TicTacToe {
     }
     public static int[] getAIPlayerInput(){
         /**
-         * A simple ai that picks the next avaialble cell from the list
+         * A simple ai that picks a random avaialble cell
          */
-         for(int i =0 ;i<Cells.length-1 ;i++){
-             if(" ".equals(Cells[i])){
-                 int x = i%cols;
-                 int y = i / rows;
-                 return new int[]{x,y};
-             }
+        System.out.println(currentPlayer +" ("+currentMarker+")");
+        System.out.println("Enter coordinates (X,Y):");
+        Random r = new Random();
+        int i=0;
+        List<Integer> triedMoves = new ArrayList<Integer>();
+        while(triedMoves.size()<(cols*rows)){
+            i=r.nextInt(cols*rows);
+            if (!triedMoves.contains(i)){
+                triedMoves.add(i);
+                if(" ".equals(Cells[i])){
+                    int x = i%cols;
+                    int y = i / rows;
+                    System.out.println(x+","+y);
+                    return new int[]{x,y};
+                }
+            }
          }     
-        
         return new int[]{0,0};
     }
     public static int[] getHumanPlayerInput(){
@@ -225,7 +248,7 @@ public class TicTacToe {
         int y = Coords[1];
         // For Vertical check 
         for(int row =y-2;row<y;row++){
-            if(row >cols) break;
+            if(row >rows) break;
             if(row<0) continue;
             if(Cells[x+(row*rows)].equals(currentMarker)){
                 if(row == y-2){
@@ -257,12 +280,12 @@ public class TicTacToe {
                         printWinner();
                         return false;
                     }
-                }else if((col==x-1)&&(x+1<rows)){
+                }else if((col==x-1)&&(x+1<cols)){
                     if(Cells[(x+1)+(y*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if(((col==x)&&(x+1<rows))&&(x+2<rows)){
+                }else if(((col==x)&&(x+1<cols))&&(x+2<cols)){
                     if((Cells[(x+1)+(y*rows)].equals(currentMarker))&&(Cells[(x+2)+(y*rows)].equals(currentMarker))){
                         printWinner();
                         return false;
@@ -281,12 +304,12 @@ public class TicTacToe {
                         printWinner();
                         return false;
                     }
-                }else if(((i==1)&&(x+1<cols))&&(x+1<rows)){
+                }else if(((i==1)&&(x+1<cols))&&(y+1<rows)){
                     if(Cells[(x+1)+((y+1)*rows)].equals(currentMarker)){
                         printWinner();
                         return false;
                     }
-                }else if(((i==0)&&(x+2<cols))&&(rows-y>=2)){
+                }else if(((i==0)&&(x+2<cols))&&(y+2<rows)){
                     if((Cells[(x+1)+((y+1)*rows)].equals(currentMarker))&&(Cells[(x+2)+((y+2)*rows)].equals(currentMarker))){
                         printWinner();
                         return false;
@@ -311,7 +334,7 @@ public class TicTacToe {
                         printWinner();
                         return false;
                     }
-                }else if(((i==0)&&(x-2>=0))&&(rows-y>=2)){
+                }else if(((i==0)&&(x-2>=0))&&(y+2<rows)){
                     if((Cells[(x-1)+((y+1)*rows)].equals(currentMarker))&&(Cells[(x-2)+((y+2)*rows)].equals(currentMarker))){
                         printWinner();
                         return false;
@@ -332,12 +355,14 @@ public class TicTacToe {
         return false;
     }
     public static void printWinner(){
+        Winner=currentPlayer;
         System.out.println("*******WINNER**********");
         System.out.println("Congratulations "+currentPlayer);
         System.out.println("***********************");
         
     }
     public static void printDraw(){
+        Winner="Draw";
         System.out.println("*********Draw**********");
         System.out.println("The only winning move is");
         System.out.println("not to play");
@@ -385,5 +410,39 @@ public class TicTacToe {
         
     
     }
-    
+    public static void addToLeaderBoard(String leader){
+        Timestamp TimeStamp = new Timestamp(System.currentTimeMillis());
+        String leaderJson="{\"winner\":\""+leader+"\",\"TimeStamp\" : \""+TimeStamp+"\"}";
+        
+        JSONParser parser = new JSONParser();
+        
+        Object fileObj;
+        Object leaderObj;
+        try {
+            fileObj = parser.parse(new FileReader("LeaderBoard.json"));
+            JSONArray itemList = (JSONArray) fileObj;
+            leaderObj=parser.parse(leaderJson);
+            JSONObject leaderJSON=(JSONObject)leaderObj;
+            itemList.add(leaderJSON);
+            //convert to pretty print for nice output
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            
+            // add to 
+            FileWriter file = new FileWriter("LeaderBoard.json");
+            //System.out.println(itemList.toString());
+            file.write(gson.toJson(itemList));
+            file.flush();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TicTacToe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TicTacToe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(TicTacToe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+        
+
+
+    }
 }
